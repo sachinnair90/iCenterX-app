@@ -1,16 +1,19 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 
-import { AppComponent } from './app.component';
+import { IcAppComponent } from './app.component';
 
+// features
+import { IcLoginModule } from '../features/login/icLogin.module';
 @NgModule({
   declarations: [
-    AppComponent
+    IcAppComponent
   ],
   imports: [
-    BrowserModule
+    BrowserModule,
+    IcLoginModule
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [IcAppComponent]
 })
 export class AppModule { }
