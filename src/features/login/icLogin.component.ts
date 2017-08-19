@@ -1,21 +1,21 @@
 import { Component, OnInit } from '@angular/core';
 
-import { AuthService } from './shared/icLogin.service';
+import { IcLoginService } from './shared/icLogin.service';
 
 @Component({
   selector: 'ic-login',
   templateUrl: 'icLogin.component.html',
-  providers: [AuthService]
+  providers: [IcLoginService]
 })
 
 export class IcLoginComponent implements OnInit {
 
-  constructor(private authService: AuthService) { }
+  constructor(public authService: IcLoginService) { }
 
   ngOnInit() {
   }
 
-  protected onLoginClick() {
+  public onLoginClick() {
     this.authService.login();
   }
 }

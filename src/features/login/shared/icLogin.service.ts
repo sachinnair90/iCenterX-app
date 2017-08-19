@@ -1,21 +1,21 @@
 import { Injectable } from '@angular/core';
-import { AUTH_CONFIG } from './icLogin.model';
+import { IC_LOGIN } from './icLogin.model';
 // import { Router } from '@angular/router';
 import 'rxjs/add/operator/filter';
 import * as auth0 from 'auth0-js';
 
 @Injectable()
-export class AuthService {
+export class IcLoginService {
 
   userProfile: any;
   requestedScopes: string = 'openid profile read:timesheets create:timesheets';
 
   auth0 = new auth0.WebAuth({
-    clientID: AUTH_CONFIG.clientID,
-    domain: AUTH_CONFIG.domain,
+    clientID: IC_LOGIN.clientID,
+    domain: IC_LOGIN.domain,
     responseType: 'token id_token',
-    audience: AUTH_CONFIG.apiUrl,
-    redirectUri: AUTH_CONFIG.callbackURL,
+    audience: IC_LOGIN.apiUrl,
+    redirectUri: IC_LOGIN.callbackURL,
     scope: this.requestedScopes
   });
 

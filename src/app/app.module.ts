@@ -5,7 +5,7 @@ import { IcAppComponent } from './app.component';
 
 // features
 import { IcLoginModule } from '../features/login/icLogin.module';
-import { AuthService } from '../features/login/shared/icLogin.service';
+import { IcLoginService } from '../features/login/shared/icLogin.service';
 @NgModule({
   declarations: [
     IcAppComponent
@@ -15,7 +15,7 @@ import { AuthService } from '../features/login/shared/icLogin.service';
     IcLoginModule
   ],
   providers: [
-    AuthService
+    IcLoginService
   ],
   bootstrap: [IcAppComponent]
 })

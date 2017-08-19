@@ -5,7 +5,7 @@ import 'rxjs/Rx';
 
 import { IcLoginComponent } from './icLogin.component';
 import { IcLoginService } from './shared/icLogin.service';
-import { IcLogin } from './shared/icLogin.model';
+import { IC_LOGIN } from './shared/icLogin.model';
 
 describe('a icLogin component', () => {
 	let component: IcLoginComponent;
@@ -29,11 +29,19 @@ describe('a icLogin component', () => {
 	it('should have an instance', () => {
 		expect(component).toBeDefined();
 	});
+
+	it('should show authentication on login button click', () => {
+		spyOn(component.authService, 'login').and.callThrough();
+
+		component.onLoginClick();
+
+		expect(component.authService.login).toHaveBeenCalled();
+	});
 });
 
 // Mock of the original icLogin service
 class MockIcLoginService extends IcLoginService {
-	getList(): Observable<any> {
-		return Observable.from([ { id: 1, name: 'One'}, { id: 2, name: 'Two'} ]);
+	public login() {
+		return null;
 	}
 }
