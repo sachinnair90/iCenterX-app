@@ -20,7 +20,7 @@
     "import-spacing": true,
     "indent": [
       true,
-      "spaces"
+      "tab"
     ],
     "interface-over-type-literal": true,
     "label-position": true,
@@ -117,13 +117,13 @@
     "directive-selector": [
       true,
       "attribute",
-      "app",
+      "ic",
       "camelCase"
     ],
     "component-selector": [
       true,
       "element",
-      "app",
+      "ic",
       "kebab-case"
     ],
     "use-input-property-decorator": true,

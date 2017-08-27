@@ -19,43 +19,40 @@ const minimizeCss = false;
 const baseHref = "";
 const deployUrl = "";
 const postcssPlugins = function () {
-        // safe settings based on: https://github.com/ben-eb/cssnano/issues/358#issuecomment-283696193
-        const importantCommentRe = /@preserve|@license|[@#]\s*source(?:Mapping)?URL|^!/i;
-        const minimizeOptions = {
-            autoprefixer: false,
-            safe: true,
-            mergeLonghand: false,
-            discardComments: { remove: (comment) => !importantCommentRe.test(comment) }
-        };
-        return [
-            postcssUrl({
-                url: (URL) => {
-                    // Only convert root relative URLs, which CSS-Loader won't process into require().
-                    if (!URL.startsWith('/') || URL.startsWith('//')) {
-                        return URL;
-                    }
-                    if (deployUrl.match(/:\/\//)) {
-                        // If deployUrl contains a scheme, ignore baseHref use deployUrl as is.
-                        return `${deployUrl.replace(/\/$/, '')}${URL}`;
-                    }
-                    else if (baseHref.match(/:\/\//)) {
-                        // If baseHref contains a scheme, include it as is.
-                        return baseHref.replace(/\/$/, '') +
-                            `/${deployUrl}/${URL}`.replace(/\/\/+/g, '/');
-                    }
-                    else {
-                        // Join together base-href, deploy-url and the original URL.
-                        // Also dedupe multiple slashes into single ones.
-                        return `/${baseHref}/${deployUrl}/${URL}`.replace(/\/\/+/g, '/');
-                    }
-                }
-            }),
-            autoprefixer(),
-        ].concat(minimizeCss ? [cssnano(minimizeOptions)] : []);
+    // safe settings based on: https://github.com/ben-eb/cssnano/issues/358#issuecomment-283696193
+    const importantCommentRe = /@preserve|@license|[@#]\s*source(?:Mapping)?URL|^!/i;
+    const minimizeOptions = {
+        autoprefixer: false,
+        safe: true,
+        mergeLonghand: false,
+        discardComments: { remove: (comment) => !importantCommentRe.test(comment) }
     };
-
-
-
+    return [
+        postcssUrl({
+            url: (URL) => {
+                // Only convert root relative URLs, which CSS-Loader won't process into require().
+                if (!URL.startsWith('/') || URL.startsWith('//')) {
+                    return URL;
+                }
+                if (deployUrl.match(/:\/\//)) {
+                    // If deployUrl contains a scheme, ignore baseHref use deployUrl as is.
+                    return `${deployUrl.replace(/\/$/, '')}${URL}`;
+                }
+                else if (baseHref.match(/:\/\//)) {
+                    // If baseHref contains a scheme, include it as is.
+                    return baseHref.replace(/\/$/, '') +
+                        `/${deployUrl}/${URL}`.replace(/\/\/+/g, '/');
+                }
+                else {
+                    // Join together base-href, deploy-url and the original URL.
+                    // Also dedupe multiple slashes into single ones.
+                    return `/${baseHref}/${deployUrl}/${URL}`.replace(/\/\/+/g, '/');
+                }
+            }
+        }),
+        autoprefixer(),
+    ].concat(minimizeCss ? [cssnano(minimizeOptions)] : []);
+};
 
 module.exports = {
   "resolve": {
@@ -83,7 +80,7 @@ module.exports = {
       "./src\\polyfills.ts"
     ],
     "styles": [
-      "./src\\styles.css"
+      "./src\\styles.scss"
     ]
   },
   "output": {
@@ -98,7 +95,7 @@ module.exports = {
         "test": /\.js$/,
         "loader": "source-map-loader",
         "exclude": [
-          /\/node_modules\//
+          path.join(process.cwd(), 'node_modules')
         ]
       },
       {
@@ -119,7 +116,7 @@ module.exports = {
       },
       {
         "exclude": [
-          path.join(process.cwd(), "src\\styles.css")
+          path.join(process.cwd(), "src\\styles.scss")
         ],
         "test": /\.css$/,
         "use": [
@@ -142,7 +139,7 @@ module.exports = {
       },
       {
         "exclude": [
-          path.join(process.cwd(), "src\\styles.css")
+          path.join(process.cwd(), "src\\styles.scss")
         ],
         "test": /\.scss$|\.sass$/,
         "use": [
@@ -173,7 +170,7 @@ module.exports = {
       },
       {
         "exclude": [
-          path.join(process.cwd(), "src\\styles.css")
+          path.join(process.cwd(), "src\\styles.scss")
         ],
         "test": /\.less$/,
         "use": [
@@ -201,38 +198,8 @@ module.exports = {
         ]
       },
       {
-        "exclude": [
-          path.join(process.cwd(), "src\\styles.css")
-        ],
-        "test": /\.styl$/,
-        "use": [
-          "exports-loader?module.exports.toString()",
-          {
-            "loader": "css-loader",
-            "options": {
-              "sourceMap": false,
-              "importLoaders": 1
-            }
-          },
-          {
-            "loader": "postcss-loader",
-            "options": {
-              "ident": "postcss",
-              "plugins": postcssPlugins
-            }
-          },
-          {
-            "loader": "stylus-loader",
-            "options": {
-              "sourceMap": false,
-              "paths": []
-            }
-          }
-        ]
-      },
-      {
         "include": [
-          path.join(process.cwd(), "src\\styles.css")
+          path.join(process.cwd(), "src\\styles.scss")
         ],
         "test": /\.css$/,
         "use": [
@@ -255,7 +222,7 @@ module.exports = {
       },
       {
         "include": [
-          path.join(process.cwd(), "src\\styles.css")
+          path.join(process.cwd(), "src\\styles.scss")
         ],
         "test": /\.scss$|\.sass$/,
         "use": [
@@ -286,7 +253,7 @@ module.exports = {
       },
       {
         "include": [
-          path.join(process.cwd(), "src\\styles.css")
+          path.join(process.cwd(), "src\\styles.scss")
         ],
         "test": /\.less$/,
         "use": [
@@ -309,36 +276,6 @@ module.exports = {
             "loader": "less-loader",
             "options": {
               "sourceMap": false
-            }
-          }
-        ]
-      },
-      {
-        "include": [
-          path.join(process.cwd(), "src\\styles.css")
-        ],
-        "test": /\.styl$/,
-        "use": [
-          "style-loader",
-          {
-            "loader": "css-loader",
-            "options": {
-              "sourceMap": false,
-              "importLoaders": 1
-            }
-          },
-          {
-            "loader": "postcss-loader",
-            "options": {
-              "ident": "postcss",
-              "plugins": postcssPlugins
-            }
-          },
-          {
-            "loader": "stylus-loader",
-            "options": {
-              "sourceMap": false,
-              "paths": []
             }
           }
         ]
@@ -381,7 +318,7 @@ module.exports = {
       "showErrors": true,
       "chunks": "all",
       "excludeChunks": [],
-      "title": "Webpack App",
+      "title": "iCenterX",
       "xhtml": true,
       "chunksSortMode": function sort(left, right) {
         let leftIndex = entryPoints.indexOf(left.names[0]);

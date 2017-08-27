@@ -1,10 +1,17 @@
 import { Component } from '@angular/core';
 
+import { IcLoginService } from '../features/login/shared/icLogin.service';
+
 @Component({
-  selector: 'app-root',
+  selector: 'ic-app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']
+  styleUrls: ['./app.component.scss'],
+  providers: [IcLoginService]
 })
-export class AppComponent {
-  title = 'app';
+export class IcAppComponent {
+  title = 'iCenterX';
+
+  constructor(public loginService: IcLoginService) {
+    loginService.handleAuthentication();
+  }
 }
